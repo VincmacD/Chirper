@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ums
+    username: root
+    password: sql
+  jpa:
+    hibernate:
+      ddl-auto: update
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: 2c8b9d9aa33f2cdf398b
+            clientSecret: 4dae26bb7048d90915cda1c0c550b899a0bff5b1
+            scope: read:user, user:name
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>Demo</title>
+  <meta name="description" content=""/>
+  <meta name="viewport" content="width=device-width"/>
+  <base href="/"/>
+  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<h1>Welcome to the Twitter-Like-App!</h1>
+
+
+<div class="container unauthenticated">
+  <a href="/oauth2/authorization/github">Log In With GitHub</a>
+</div>
+<div class="container authenticated" style="display:none">
+  <b>Logged in as: </b><span id="user"></span>
+  <br>
+  <b>Jwt Token: </b><span id="jwt"></span>
+</div>
+
+<div>
+  <button onClick="logout()" class="btn btn-primary">Logout</button>
+</div>
+
+<script type="text/javascript">
+  var logout = function() {
+    $.post("/logout", function() {
+      $("#user").html('');
+      $(".unauthenticated").show();
+      $(".authenticated").hide();
+    });
+    return true;
+  }
+
+  $(document).ready(function() {
+    if (window.location.href.includes("oauth2/authorization/github")) {
+      window.location.href = "/api/v1/auth/user";
+    } else {
+      $.get("/api/v1/auth/user", function(data) {
+        console.log("User data:", data);
+        var userName = data.attributes.login || data.name || data.principal || "Unknown User";
+        $("#user").html(userName);
+        $(".unauthenticated").hide();
+        $(".authenticated").show();
+
+        $.get("/api/v1/auth/github-authenticate", function (data) {
+          console.log("GitHub authentication data:", data);
+          var jwtToken = data.access_token || "No token";
+          $("#jwt").html(jwtToken);
+        });
+      });
+    }
+
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (settings.type == 'POST' || settings.type == 'PUT' || settings.type == 'DELETE') {
+          if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+            xhr.setRequestHeader("X-XSRF-TOKEN", Cookies.get('XSRF-TOKEN'));
+          }
+        }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

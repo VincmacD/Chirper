@@ -1,0 +1,28 @@
+server:
+  port: 8060
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-management-service
+          uri: lb://user-management-service
+          predicates:
+            - Path=/api/v1/ums/**
+
+        - id: messaging-service
+          uri: lb://messaging-service
+          predicates:
+            - Path=/api/v1/ms/**
+          filters:
+            - JwtAuthenticationFilter
+
