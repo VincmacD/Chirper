@@ -8,7 +8,7 @@ The Chirper Microservice Application is a backend simulation of a Twitter-like s
 
 ### Microservices Dependencies:
 
-Ensure that all microservices are equipped with the necessary dependencies for optimal functionality, as this is a Maven-based project.
+All microservices are equipped with the necessary dependencies for optimal functionality, as this is a Maven-based project.
 
 ### MySQL Workbench Server Configuration:
 
