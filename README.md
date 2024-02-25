@@ -12,5 +12,5 @@ All microservices are equipped with the necessary dependencies for optimal funct
 
 ### MySQL Workbench Server Configuration:
 
-Set up a MySQL Workbench server instance named "Local Instance 3306" with the following credentials: username root, host localhost, port 3306 (please note that there seems to be a typo in your original port number, which should likely be 3306 instead of 336).
+Set up a MySQL Workbench server instance named "Local Instance 3306" with the following credentials: username root, host localhost, port 3306
 Import the provided .sql files into both databases.
